@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Текстовый Квест</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 600px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 30px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .story {
+            font-size: 20px;
+            color: #444;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .button {
+            background-color: #007BFF;
+            color: white;
+            border: 2px solid #007BFF;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .button:hover {
+            background-color: white;
+            color: #007BFF;
+            transform: scale(1.05);
+        }
+
+        .button:focus {
+            outline: none;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* Стили для отображения времени */
+        .time {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Элемент для отображения времени -->
+    <div class="time" id="time"></div>
+
+    <div class="container">
+        <div class="title">Тайны Леса</div>
+        <div class="story" id="story">Ты просыпаешься в темном, туманном лесу. Ветви деревьев переплетаются, закрывая свет. Неподалеку слышен странный шум. Впереди виднеется тусклый свет. Что делать?</div>
+        <div class="choices">
+            <button class="button" id="choice1">Пойти к свету</button>
+            <button class="button" id="choice2">Исследовать шум</button>
+        </div>
+        <div class="footer">© 2025 Лесные Приключения</div>
+    </div>
+
+    <script>
+        let storyElement = document.getElementById("story");
+        let choice1 = document.getElementById("choice1");
+        let choice2 = document.getElementById("choice2");
+
+        // Функция для отображения текущего времени
+        function updateTime() {
+            let currentDate = new Date();
+            let hours = currentDate.getHours().toString().padStart(2, '0');
+            let minutes = currentDate.getMinutes().toString().padStart(2, '0');
+            let seconds = currentDate.getSeconds().toString().padStart(2, '0');
+            let timeString = `${hours}:${minutes}:${seconds}`;
+            document.getElementById("time").textContent = timeString;
+        }
+
+        // Обновление времени каждую секунду
+        setInterval(updateTime, 1000);
+        updateTime(); // Обновить сразу при загрузке страницы
+
+        choice1.addEventListener("click", function() {
+            storyElement.innerHTML = "Ты решаешь двигаться в сторону света. Вскоре ты оказываешься у старой хижины, из которой доносится странный запах. Может быть, кто-то живет здесь?";
+            choice1.innerHTML = "Заглянуть в окно";
+            choice2.innerHTML = "Постучать в дверь";
+            choice1.onclick = peekThroughWindow;
+            choice2.onclick = knockOnDoor;
+        });
+
+        choice2.addEventListener("click", function() {
+            storyElement.innerHTML = "Ты идешь в сторону шума и вдруг видишь существо, спрятавшееся в кустах. Оно смотрит на тебя своими яркими глазами.";
+            choice1.innerHTML = "Подойти ближе";
+            choice2.innerHTML = "Отступить назад";
+            choice1.onclick = approachCreature;
+            choice2.onclick = retreatIntoForest;
+        });
+
+        function peekThroughWindow() {
+            storyElement.innerHTML = "Ты подходишь к окну и видишь странную фигуру. Это выглядит как человек, но что-то в его движениях настораживает.";
+            choice1.innerHTML = "Попробовать войти в дом";
+            choice2.innerHTML = "Обойти дом и вернуться в лес";
+            choice1.onclick = enterHouse;
+            choice2.onclick = leaveHouse;
+        }
+
+        function knockOnDoor() {
+            storyElement.innerHTML = "Ты стучишь в дверь, и она медленно открывается. На пороге стоит человек в темной мантии, его взгляд холоден.";
+            choice1.innerHTML = "Поговорить с ним";
+            choice2.innerHTML = "Уйти и вернуться в лес";
+            choice1.onclick = talkToStranger;
+            choice2.onclick = runAway;
+        }
+
+        function approachCreature() {
+            storyElement.innerHTML = "Ты осторожно подходишь, и существо вдруг резко встает и начинает светиться! Оно оказывается магическим стражем леса.";
+            choice1.innerHTML = "Задать вопрос стражу";
+            choice2.innerHTML = "Попытаться убежать";
+            choice1.onclick = askGuardian;
+            choice2.onclick = escape;
+        }
+
+        function retreatIntoForest() {
+            storyElement.innerHTML = "Ты отступаешь вглубь леса, но ощущение, что кто-то или что-то следит за тобой, не покидает.";
+            choice1.innerHTML = "Найти укрытие";
+            choice2.innerHTML = "Продолжить идти вперед";
+            choice1.onclick = findShelter;
+            choice2.onclick = continueExploring;
+        }
+
+        function enterHouse() {
+            storyElement.innerHTML = "Ты входишь в дом и видишь старинные книги и магические артефакты. В углу стоит зеркало, в котором ты видишь себя... но как-то иначе.";
+            choice1.innerHTML = "Подойти к зеркалу";
+            choice2.innerHTML = "Оставить зеркало и исследовать другие предметы";
+            choice1.onclick = lookInMirror;
+            choice2.onclick = exploreHouse;
+        }
+
+        function leaveHouse() {
+            storyElement.innerHTML = "Ты решаешь уйти, но заметив, как туман сгущается, понимаешь, что путь назад может быть опасным.";
+            choice1.innerHTML = "Попробовать найти безопасный выход";
+            choice2.innerHTML = "Войти обратно в дом";
+            choice1.onclick = findExit;
+            choice2.onclick = enterHouse;
+        }
+
+        function talkToStranger() {
+            storyElement.innerHTML = "Человек в мантии рассказывает, что ты забрел в запретный лес, и тебе нужно пройти испытания, чтобы выбраться.";
+            choice1.innerHTML = "Согласиться пройти испытания";
+            choice2.innerHTML = "Отказаться и попытаться уйти";
+            choice1.onclick = acceptChallenge;
+            choice2.onclick = rejectChallenge;
+        }
+
+        function runAway() {
+            storyElement.innerHTML = "Ты быстро уходишь, но чувствуешь, что лес становится еще более опасным. Странные звуки преследуют тебя.";
+            choice1.innerHTML = "Спрятаться за деревом";
+            choice2.innerHTML = "Продолжить путь";
+            choice1.onclick = hideBehindTree;
+            choice2.onclick = continueWalking;
+        }
+
+        // Additional functions for other storylines can be added below...
+    </script>
+</body>
+</html>
